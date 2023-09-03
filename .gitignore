@@ -1,12 +1,15 @@
 # ignored due to copyright concerns
-bin
-jre
-lib
-txlib
+txlib/*
 
 # possible files generated during debug
 .txlib_version
-.qsign_pid
+.qsign.pid
+*.bak
+
+# Files for release build
+/releases
+/CHANGELOG
+/启动 QSign.sh
 
 # System or IDE files
 .DS_Store

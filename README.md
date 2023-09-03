@@ -8,4 +8,4 @@
 会让您选择 txlib 版本，及运行 QSign 的主机、端口和 API Key。通常情况下，您可以回车跳过而使用默认配置。
 
 # 忽略的文件
-考虑到可能的版权问题，unidbg-fetch-qsign-onekey 的脚本文件、Java SE 运行时、txlib 配置文件、jq 和各种 JAR 依赖包不包括在源代码中。
+考虑到可能的版权问题，txlib 配置文件不包括在源代码中，请自行取得并放置在 txlib 文件夹中

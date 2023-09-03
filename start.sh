@@ -1,4 +1,4 @@
-jq=$(readlink -f "./lib/jq-osx-amd64")
+jq=$(readlink -f "./bin/jq-osx-amd64")
 
 jre=$(readlink -f "./jre")
 
@@ -9,6 +9,8 @@ QSIGN_CFG_FILE="./txlib/$TXLIB_VER/config.json"
 QSIGN_HOST=""
 QSIGN_PORT=""
 QSIGN_KEY=""
+
+echo "AutoQSignForMac v1.0.1 by 檀轶步棋"
 
 if [[ -f $TXLIB_VER_FILE ]]; then
     TXLIB_VER=$(cat $TXLIB_VER_FILE)
