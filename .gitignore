@@ -1,0 +1,12 @@
+# ignored due to copyright concerns
+bin
+jre
+lib
+txlib
+
+# possible files generated during debug
+.txlib_version
+.qsign_pid
+
+# System or IDE files
+.DS_Store
