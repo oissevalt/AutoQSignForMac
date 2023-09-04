@@ -1,6 +1,12 @@
 jq=$(readlink -f "./bin/jq-osx-amd64")
+if [[ $(which jq) ]] then
+  jq=$(which jq)
+fi
 
 jre=$(readlink -f "./jre")
+if [[ $(which java) ]] then
+  jre="" # provide empty string for qsign to use installed java
+fi
 
 TXLIB_VER=${TXLIB_VER:-'8.9.63'}
 TXLIB_VER_FILE=".txlib_version"
@@ -52,13 +58,6 @@ else
 fi
 
 export jq="$jq" JAVA_HOME="$jre"
-QSIGN_PID_FILE=".qsign.pid"
-if [[ -f $QSIGN_PID_FILE && $(pgrep -F $QSIGN_PID_FILE) ]]; then
-    echo "QSign already running in PID $(cat $QSIGN_PID_FILE)"
-else
-    echo "QSign starting ..."
-    bin/unidbg-fetch-qsign --basePath="txlib/$TXLIB_VER"
-    sleep 3
-    QSIGN_PID=$(ps -ax -o pid,command | sort -k1nr | grep qsign | grep java | head -n1 | awk "{print $1}")
-    echo "$QSIGN_PID" > "$QSIGN_PID_FILE"
-fi
+
+echo "starting QSign ..."
+bin/unidbg-fetch-qsign --basePath="txlib/$TXLIB_VER"
