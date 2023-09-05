@@ -1,11 +1,26 @@
+SKIP_DELAY=0
+while [[ "$#" -gt 0 ]]; do
+    case $1 in
+        -s | --skip-delay)
+            SKIP_DELAY=1
+            ;;
+        *)
+            echo "unknown arg $1"
+            exit 1
+            ;;
+    esac
+    shift
+done
+
+
 jq=$(readlink -f "./bin/jq-osx-amd64")
-if [[ $(which jq) ]] then
-  jq=$(which jq)
+if [[ $(which jq) ]]; then
+    jq=$(which jq)
 fi
 
 jre=$(readlink -f "./jre")
-if [[ $(which java) ]] then
-  jre="" # provide empty string for qsign to use installed java
+if [[ $(which java) ]]; then
+    jre="" # provide empty string for qsign to use installed java
 fi
 
 TXLIB_VER=${TXLIB_VER:-'8.9.63'}
@@ -16,7 +31,7 @@ QSIGN_HOST=""
 QSIGN_PORT=""
 QSIGN_KEY=""
 
-echo "AutoQSignForMac v1.0.1 by 檀轶步棋"
+echo "AutoQSignForMac v1.1.0 by 檀轶步棋"
 
 if [[ -f $TXLIB_VER_FILE ]]; then
     TXLIB_VER=$(cat $TXLIB_VER_FILE)
@@ -59,5 +74,9 @@ fi
 
 export jq="$jq" JAVA_HOME="$jre"
 
-echo "starting QSign ..."
+if [[ $SKIP_DELAY -eq 0 ]]; then
+    echo "After 5 seconds QSign will start on http://$QSIGN_HOST:$QSIGN_PORT ..."
+    sleep 5
+fi
+
 bin/unidbg-fetch-qsign --basePath="txlib/$TXLIB_VER"
