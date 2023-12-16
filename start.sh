@@ -14,6 +14,9 @@ done
 
 
 jq=$(readlink -f "./bin/jq-osx-amd64")
+if [[ ! -x $jq ]]; then
+    chmod +x "$jq"
+fi
 if [[ $(which jq) ]]; then
     jq=$(which jq)
 fi
@@ -31,7 +34,7 @@ QSIGN_HOST=""
 QSIGN_PORT=""
 QSIGN_KEY=""
 
-echo "AutoQSignForMac v1.1.0 by 檀轶步棋"
+echo "AutoQSignForMac v1.1.1 by 檀轶步棋"
 
 if [[ -f $TXLIB_VER_FILE ]]; then
     TXLIB_VER=$(cat $TXLIB_VER_FILE)
@@ -43,9 +46,9 @@ if [[ -f $TXLIB_VER_FILE ]]; then
         exit 1
     fi
 
-    QSIGN_HOST=$(jq -r ".server.host" $QSIGN_CFG_FILE)
-    QSIGN_PORT=$(jq -r ".server.port" $QSIGN_CFG_FILE)
-    QSIGN_KEY=$(jq -r ".key" $QSIGN_CFG_FILE)
+    QSIGN_HOST=$($jq -r ".server.host" $QSIGN_CFG_FILE)
+    QSIGN_PORT=$($jq -r ".server.port" $QSIGN_CFG_FILE)
+    QSIGN_KEY=$($jq -r ".key" $QSIGN_CFG_FILE)
 else
     echo -n "Select a txlib version: "; ls txlib
     read -r -p "txlib version (default:$TXLIB_VER) > " TXLIB_READ
@@ -66,7 +69,7 @@ else
     if [[ -z $QSIGN_KEY ]]; then QSIGN_KEY=$RANDOM; fi
 
     cp "$QSIGN_CFG_FILE" "$QSIGN_CFG_FILE.bak"
-    jq \
+    $jq \
         ". + { \"server\":{ \"host\":\"$QSIGN_HOST\", \"port\": ${QSIGN_PORT} }, \"key\":\"$QSIGN_KEY\", \"auto_register\":true }" \
         "$QSIGN_CFG_FILE.bak" > "$QSIGN_CFG_FILE"
     echo "$TXLIB_VER" > "$TXLIB_VER_FILE"
